@@ -1,0 +1,22 @@
+---
+- name: Setup web server
+  hosts: webservers
+  become: true
+  vars:
+    web_root: "/var/www/html"
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Ensure nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Copy index.html
+      copy:
+        src: index-ansible.html
+        dest: "{{ web_root }}/index.html"
